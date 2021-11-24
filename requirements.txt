@@ -1,0 +1,12 @@
+-e .
+# Not sure why this lib has to be exactly here. When I put it in the end of the file, for some reason, something inside
+# the lib wasn't installed correctly and 'cdk synth' failed
+aws-solutions-constructs.core
+aws-solutions-constructs.aws-apigateway-lambda
+aws-cdk.aws_lambda
+aws-cdk.aws_apigateway
+aws-cdk.aws_codecommit
+aws-cdk.aws_codepipeline
+aws-cdk.pipelines
+aws-cdk.aws_codepipeline_actions
+mock
