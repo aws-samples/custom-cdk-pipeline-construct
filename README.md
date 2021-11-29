@@ -95,18 +95,23 @@ in you AWS Account. So run the command below:
     $ cdk bootstrap
     ```
 
-5. Open the `cdk.json` and add the following content (more explanations of why this is need in the [Building a Custom
-CDK Pipeline with Constructs](#Building a Custom CDK Pipeline with Constructs) section of this document):
+5. Go to the AWS CodeCommit dashboard in your AWS account and create a repository (if you want, use the name
+`custom-cdk-pipeline-construct` to skip step 8).
+
+6. Clone the AWS CodeCommit repository you've just created to your local machine.
+
+7. Download this GitHub repository's code and unzip all its content inside your AWS CodeCommit repo's local folder.
+
+8. If you didn't use `custom-cdk-pipeline-construct` for your repo's name, open the
+`cdk_pipeline_artifact/custom_pipeline_stack.py` file and change the repository name according to the one you created in 
+your account:
     ```
-    {
-      // ...
-      "context": {
-        "@aws-cdk/core:newStyleStackSynthesis": true
-      }
-    }
+    app_repository = codecommit.Repository.from_repository_name(self, 'CodeCommitRepo', '<YOUR_REPO_NAME_HERE>')
     ```
 
-6. Finally, deploy the project:
+9. Commit and push everything to your AWS CodeCommit repository.
+
+10. Finally, deploy the project:
     ```
     $ cdk deploy --all
     ```
@@ -117,7 +122,7 @@ CDK Pipeline with Constructs](#Building a Custom CDK Pipeline with Constructs) s
 
 ## What is a Construct?
 
-Quoting the [AWS CDK Developer Guida](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html):
+Quoting the [AWS CDK Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/constructs.html):
 
 >Constructs are the basic building blocks of AWS CDK apps. A construct represents a "cloud component" and encapsulates
 everything AWS CloudFormation needs to create the component.
@@ -233,8 +238,16 @@ the `CdkPipeline`, in the end of it we're going to additionally have the `SelfMu
 [What is a Construct?](#What is a Construct?) section of this document. The `SelfMutate` stage redeploys the AWS
 CloudFormation template that deployed all this infrastructure. Therefore, the AWS CodeBuild project that will do this
 needs the correct AWS CloudFormation permissions. To do so, this library uses prerelease features of the AWS CDK
-framework, which can be enabled by following the step 5 of the [Installation and Deployment](#Installation and Deployment)
-section of this document.
+framework, which can be enabled by adding the following code to the `cdk.json` of your project:
+
+    ```
+    {
+      // ...
+      "context": {
+        "@aws-cdk/core:newStyleStackSynthesis": true
+      }
+    }
+    ```
 
 If you don't do this procedure, the AWS CodeBuild project will not have the correct permissions in its AWS IAM Role, and
 will always fail in the `SelfMutate` step. You can see more information regarding the `CdkPipeline` library in

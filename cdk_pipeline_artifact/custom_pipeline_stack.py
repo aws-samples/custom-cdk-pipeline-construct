@@ -13,5 +13,5 @@ class CustomPipelineStack(core.Stack):
 
         ApplicationConstruct(self, "{}-app-stack".format(branch))
 
-        app_repository = codecommit.Repository.from_repository_name(self, 'CodeCommitRepo', 'cdk-pipeline-artifact')
+        app_repository = codecommit.Repository.from_repository_name(self, 'CodeCommitRepo', 'custom-cdk-pipeline-construct')
         CustomPipeline(self, 'custom-{}-pipeline'.format(branch), branch=branch, repository=app_repository)
