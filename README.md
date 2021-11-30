@@ -235,10 +235,10 @@ CloudFormation template that will represent the infrastructure of our applicatio
 Lastly, to satisfy the final stage, we created the `cdk_pipeline` (`aws_cdk.pipelines.CdkPipeline`), that will actually
 create the pipeline in CodePipeline, and reference the 2 stages created previously. As we're creating our pipeline using
 the `CdkPipeline`, in the end of it we're going to additionally have the `SelfMutate` stage, mentioned in the end of the
-[What is a Construct?](#What is a Construct?) section of this document. The `SelfMutate` stage redeploys the AWS
-CloudFormation template that deployed all this infrastructure. Therefore, the AWS CodeBuild project that will do this
-needs the correct AWS CloudFormation permissions. To do so, this library uses prerelease features of the AWS CDK
-framework, which can be enabled by adding the following code to the `cdk.json` of your project:
+[What is a Construct?](#What is a Construct?) section of this document. The `SelfMutate` stage deploys the AWS
+CloudFormation template produced in the `synth_action`, deploying our application and consequently redeploying the
+pipeline itself. To do so, this library uses prerelease features of the AWS CDK framework, which can be enabled by
+adding the following code to the `cdk.json` of your project:
 
     ```
     {
